@@ -1,0 +1,18 @@
+<mat-toolbar color="primary">
+    <span>Expense Tracker</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="toggleNotifications()">
+        <mat-icon>notifications</mat-icon>
+        <span *ngIf="warnings.length > 0" class="notification-badge">{{ warnings.length }}</span>
+    </button>
+    <button mat-button [routerLink]="'/dashboard'" *ngIf="isLoggedIn()">Dashboard</button>
+    <button mat-button [routerLink]="'/expenses'" *ngIf="isLoggedIn()">Expenses</button>
+    <button mat-button [routerLink]="'/income'" *ngIf="isLoggedIn()">Income</button> 
+    <button mat-button [routerLink]="'/logout'" *ngIf="isLoggedIn()">Logout</button>
+    <button mat-button [routerLink]="'/login'" *ngIf="!isLoggedIn()">Login</button>
+</mat-toolbar>
+
+
+<div class="container">
+    <router-outlet></router-outlet>
+</div>

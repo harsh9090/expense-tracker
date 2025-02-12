@@ -1,0 +1,6 @@
+<mat-card *ngIf="warnings.length > 0">
+    <h2>⚠ Budget Warnings</h2>
+    <ul>
+        <li *ngFor="let warning of warnings">{{ warning }}</li>
+    </ul>
+</mat-card>

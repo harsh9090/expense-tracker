@@ -1,0 +1,63 @@
+<mat-card>
+    <h2>Budget Management</h2>
+
+    <!-- ✅ Add Budget Form -->
+    <form (submit)="addBudget()">
+        <mat-form-field appearance="outline">
+            <mat-label>Category</mat-label>
+            <mat-select [(ngModel)]="newBudget.category" name="category" required>
+                <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Amount</mat-label>
+            <input type="number" matInput [(ngModel)]="newBudget.amount" name="amount" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Month</mat-label>
+            <input type="number" matInput [(ngModel)]="newBudget.month" name="month" required min="1" max="12" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Year</mat-label>
+            <input type="number" matInput [(ngModel)]="newBudget.year" name="year" required />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Add Budget</button>
+    </form>
+
+    <table mat-table [dataSource]="budgets" class="mat-elevation-z8">
+        <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef>Category</th>
+            <td mat-cell *matCellDef="let budget">{{ budget.category }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef>Budget</th>
+            <td mat-cell *matCellDef="let budget">₹{{ budget.amount }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="month">
+            <th mat-header-cell *matHeaderCellDef>Month</th>
+            <td mat-cell *matCellDef="let budget">{{ budget.month }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="year">
+            <th mat-header-cell *matHeaderCellDef>Year</th>
+            <td mat-cell *matCellDef="let budget">{{ budget.year }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let budget">
+                <button mat-button color="accent" (click)="openEditDialog(budget)">Edit</button>
+                <button mat-button color="warn" (click)="deleteBudget(budget.id)">Delete</button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['category', 'amount', 'month', 'year', 'actions']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['category', 'amount', 'month', 'year', 'actions'];"></tr>
+    </table>
+</mat-card>

@@ -1,0 +1,13 @@
+.container {
+  padding: 20px;
+}
+
+.spacer {
+  flex: 1; /* ✅ Ensures spacing between title and buttons */
+}
+
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
