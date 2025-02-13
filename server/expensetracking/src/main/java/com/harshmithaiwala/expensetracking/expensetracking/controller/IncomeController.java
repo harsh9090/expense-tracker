@@ -10,9 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/income")
@@ -51,10 +49,11 @@ public class IncomeController {
 
     // ✅ Delete Income
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteIncome(@PathVariable UUID id, Authentication authentication) {
+    public ResponseEntity<Map<String, String>> deleteIncome(@PathVariable UUID id, Authentication authentication) {
         System.out.println("✅ DELETE INCOME API CALLED");
         incomeService.deleteIncome(id, authentication.getName());
-        return ResponseEntity.ok("Income deleted successfully");
+        String s = "Income deleted successfully";
+        return ResponseEntity.ok(Collections.singletonMap("message", "Income deleted successfully"));
     }
     @GetMapping("/source/{category}")
     public Optional<Object[]> getExpensesByCategory(@PathVariable String category, Authentication authentication) {

@@ -40,7 +40,14 @@ export class IncomeComponent implements OnInit {
   fetchIncome(): void {
     this.incomeService.getIncome().subscribe({
       next: (data) => {
-        this.incomes = data;
+        // Convert string dates to Date objects before sorting
+        this.incomes = data.map((income:any) => ({
+          ...income,
+          date: new Date(income.date) // Ensure it's a Date object
+        }));
+        console.log(this.incomes);
+        // Sort incomes by date (Newest First)
+        this.incomes.sort((a, b) => b.date.getTime() - a.date.getTime());
       },
       error: (err) => {
         console.error('Error fetching income:', err);
@@ -53,6 +60,7 @@ export class IncomeComponent implements OnInit {
 
     this.incomeService.addIncome(this.newIncome).subscribe({
       next: (data) => {
+
         this.incomes.push(data);
         this.newIncome = { source: '', amount: null, date: '' }; // ✅ Reset form after submission
       },
@@ -78,6 +86,7 @@ export class IncomeComponent implements OnInit {
   updateIncome(id: string, updatedIncome: any): void {
     this.incomeService.updateIncome(id, updatedIncome).subscribe({
       next: () => {
+        
         this.incomes = this.incomes.map(income =>
           income.id === id ? updatedIncome : income
         );
@@ -90,7 +99,8 @@ export class IncomeComponent implements OnInit {
   }
 
   deleteIncome(id: string): void {
-    this.incomeService.deleteIncome(id).subscribe(() => {
+    this.incomeService.deleteIncome(id).subscribe((date) => {
+      console.log('Income deleted:', date);
       this.incomes = this.incomes.filter(income => income.id !== id);
     });
   }
