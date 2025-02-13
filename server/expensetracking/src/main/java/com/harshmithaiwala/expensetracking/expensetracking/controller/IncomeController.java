@@ -1,12 +1,17 @@
 package com.harshmithaiwala.expensetracking.expensetracking.controller;
 
 import com.harshmithaiwala.expensetracking.expensetracking.model.Income;
+import com.harshmithaiwala.expensetracking.expensetracking.model.User;
+import com.harshmithaiwala.expensetracking.expensetracking.repo.IncomeRepo;
+import com.harshmithaiwala.expensetracking.expensetracking.repo.UserRepo;
 import com.harshmithaiwala.expensetracking.expensetracking.service.IncomeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -14,9 +19,13 @@ import java.util.UUID;
 public class IncomeController {
 
     private final IncomeService incomeService;
+    private final UserRepo userRepo;
+    private final IncomeRepo incomeRepo;
 
-    public IncomeController(IncomeService incomeService) {
+    public IncomeController(IncomeService incomeService, UserRepo userRepo, IncomeRepo incomeRepo) {
         this.incomeService = incomeService;
+        this.userRepo = userRepo;
+        this.incomeRepo = incomeRepo;
     }
 
     // ✅ Add Income
@@ -46,5 +55,12 @@ public class IncomeController {
         System.out.println("✅ DELETE INCOME API CALLED");
         incomeService.deleteIncome(id, authentication.getName());
         return ResponseEntity.ok("Income deleted successfully");
+    }
+    @GetMapping("/source/{category}")
+    public Optional<Object[]> getExpensesByCategory(@PathVariable String category, Authentication authentication) {
+        User user = userRepo.findByEmail(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        System.out.println(user.getEmail());
+        return incomeRepo.findByUserAndSource(user, category);
     }
 }

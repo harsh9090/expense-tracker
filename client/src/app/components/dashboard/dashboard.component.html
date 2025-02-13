@@ -1,6 +1,17 @@
-<mat-card *ngIf="warnings.length > 0">
-    <h2>⚠ Budget Warnings</h2>
-    <ul>
-        <li *ngFor="let warning of warnings">{{ warning }}</li>
-    </ul>
-</mat-card>
+<div class="flex justify-center mt-6">
+    <button (click)="activeTab = 'expenses'" [class.active]="activeTab === 'expenses'"
+        class="px-6 py-2 mx-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-700 transition">
+        Expenses
+    </button>
+
+    <button (click)="activeTab = 'income'" [class.active]="activeTab === 'income'"
+        class="px-6 py-2 mx-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-700 transition">
+        Income
+    </button>
+</div>
+
+<!-- Expense or Income View -->
+<div class="mt-6">
+    <app-inner-expenses *ngIf="activeTab === 'expenses'"></app-inner-expenses>
+    <app-inner-income *ngIf="activeTab === 'income'"></app-inner-income>
+</div>

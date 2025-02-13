@@ -12,11 +12,11 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   getLoginDetails(userEmail: string, userPassword: string): Observable<any> {
+    
     const body = {
       email: userEmail,
       password: userPassword
     };
-    console.log(body);
-    return this.http.post(`http://localhost:8080/auth/login`, body, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/auth/login`, body, { responseType: 'text' });
   }
 }

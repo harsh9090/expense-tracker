@@ -18,7 +18,14 @@ export class IncomeService {
       'Content-Type': 'application/json'
     });
   }
-
+  getCategoryWiseIncome(): Observable<any> {
+    const token = localStorage.getItem('token')
+    return this.http.get(`${this.apiUrl}/reports/category-wise-income`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+  }
   getIncome(): Observable<any> {
     return this.http.get(`${this.apiUrl}/income`, { headers: this.getAuthHeaders() });
   }
@@ -33,5 +40,13 @@ export class IncomeService {
 
   deleteIncome(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/income/${id}`, { headers: this.getAuthHeaders() });
+  }
+  getIncomeByCategory(category: string): Observable<any> {
+
+    return this.http.get(`${this.apiUrl}/income/source/${category}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
   }
 }

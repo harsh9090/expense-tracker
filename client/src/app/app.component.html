@@ -1,18 +1,31 @@
-<mat-toolbar color="primary">
-    <span>Expense Tracker</span>
-    <span class="spacer"></span>
-    <button mat-icon-button (click)="toggleNotifications()">
+<mat-toolbar color="primary" class="fixed top-0 w-full shadow-lg z-[50] bg-white h-[64px]">
+    <span class="text-lg font-bold">Expense Tracker</span>
+    <span class="flex-grow"></span>
+    <button *ngIf="warnings.length > 0 && !isLoggedIn()" mat-icon-button (click)="toggleNotifications()">
         <mat-icon>notifications</mat-icon>
-        <span *ngIf="warnings.length > 0" class="notification-badge">{{ warnings.length }}</span>
+        <span
+            class="notification-badge absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            {{ warnings.length }}
+        </span>
     </button>
     <button mat-button [routerLink]="'/dashboard'" *ngIf="isLoggedIn()">Dashboard</button>
     <button mat-button [routerLink]="'/expenses'" *ngIf="isLoggedIn()">Expenses</button>
-    <button mat-button [routerLink]="'/income'" *ngIf="isLoggedIn()">Income</button> 
+    <button mat-button [routerLink]="'/income'" *ngIf="isLoggedIn()">Income</button>
     <button mat-button [routerLink]="'/logout'" *ngIf="isLoggedIn()">Logout</button>
     <button mat-button [routerLink]="'/login'" *ngIf="!isLoggedIn()">Login</button>
+    <button mat-button [routerLink]="'/register'" *ngIf="!isLoggedIn()">Register</button>
 </mat-toolbar>
 
 
-<div class="container">
+<!-- Add padding to prevent navbar overlap -->
+<div class="container mt-[70px] p-6">
     <router-outlet></router-outlet>
 </div>
+
+
+<!-- Page Container -->
+<!-- <div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <div class="container p-6 w-full max-w-lg">
+        <router-outlet></router-outlet>
+    </div>
+</div> -->

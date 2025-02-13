@@ -9,7 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  imports: [MatCard, MatFormField, FormsModule, MatInputModule]
+  styleUrls: ['./login.component.css'],
+  imports: [ FormsModule, MatInputModule]
 })
 export class LoginComponent {
   email = '';
@@ -20,13 +21,11 @@ export class LoginComponent {
   login() {
     this.loginService.getLoginDetails(this.email, this.password).subscribe({
       next: (response) => {
-        console.log('Login response:', response);
         localStorage.setItem('token', response);
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
         console.log(err)
-        console.log("login again")
       }
     });
     

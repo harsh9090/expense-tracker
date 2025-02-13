@@ -1,0 +1,16 @@
+/* Center the dialog */
+.fixed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Background blur effect */
+.bg-black {
+    backdrop-filter: blur(5px);
+}
+
+/* Smooth animation */
+.bg-white {
+    animation: fadeIn 0.3s ease-in-out;
+}

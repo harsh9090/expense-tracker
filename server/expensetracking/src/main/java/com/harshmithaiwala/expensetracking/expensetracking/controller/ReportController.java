@@ -28,5 +28,10 @@ public class ReportController {
     public ResponseEntity<List<Map<String, Object>>> getCategorySummary(Authentication authentication) {
         return ResponseEntity.ok(reportService.getCategorySummary(authentication.getName()));
     }
+    @GetMapping("/category-wise-income")
+    public ResponseEntity<List<Map<String, Object>>> getCategoryIncome(Authentication authentication) {
+        System.out.println(authentication.getName()+ " this is name");
+        return ResponseEntity.ok(reportService.getCategoryIncome(authentication.getName()));
+    }
 
 }

@@ -19,7 +19,6 @@ import { Expense } from '../../interface/expanse.interface';
     CommonModule,
     FormsModule, // ✅ Required for [(ngModel)]
     MatTableModule,
-    MatCard,
     MatButtonModule,
     MatFormFieldModule, // ✅ Required for <mat-form-field>
     MatInputModule // ✅ Required for matInput inside <mat-form-field>
@@ -42,7 +41,6 @@ export class ExpensesComponent implements OnInit {
   fetchExpenses(): void {
     this.expenseService.getExpenses().subscribe({
       next: (data) => {
-        console.log('Expenses:', data);
         this.expenses = data;
       },
       error: (err) => {
@@ -59,7 +57,6 @@ export class ExpensesComponent implements OnInit {
         this.expenses.push({ ...this.newExpense, id: response.expenseId });
         this.newExpense = { category: '', description: '', amount: null, date: '' };
 
-        // 🚀 Show warning if budget is exceeded
         if (response.message.includes("Warning")) {
           this.snackBar.open(response.message, 'Close', { duration: 5000, panelClass: 'warning-snackbar' });
         }
@@ -76,7 +73,6 @@ export class ExpensesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(updatedExpense => {
-      console.log('The dialog was closed', updatedExpense);
       if (updatedExpense) {
         this.updateExpense(updatedExpense.id, updatedExpense);
       }
@@ -84,13 +80,12 @@ export class ExpensesComponent implements OnInit {
   }
 
   updateExpense(id: string, updatedExpense: Expense): void {
+    console.log('Updating expense:', updatedExpense);
     this.expenseService.updateExpense(id, updatedExpense).subscribe({
       next: (response) => {
         this.expenses = this.expenses.map(expense =>
           expense.id === id ? updatedExpense : expense
         );
-        
-        console.log('Expense updated:', response);
         this.fetchExpenses(); // ✅ Fetch expenses again
       },
       error: (err) => {

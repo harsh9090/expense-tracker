@@ -36,7 +36,7 @@
 
         <ng-container matColumnDef="amount">
             <th mat-header-cell *matHeaderCellDef>Budget</th>
-            <td mat-cell *matCellDef="let budget">₹{{ budget.amount }}</td>
+            <td mat-cell *matCellDef="let budget">${{ budget.amount }}</td>
         </ng-container>
 
         <ng-container matColumnDef="month">

@@ -7,9 +7,11 @@ import { authGuard } from './guards/auth.guard';
 import { IncomeComponent } from './components/income/income.component';
 import { BudgetComponent } from './components/budgets/budgets.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { registerComponent } from './components/auth/register/register.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: 'register', component: registerComponent },
     { path: 'login', component: LoginComponent },
     { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
     { path: 'expenses', component: ExpensesComponent, canActivate: [authGuard] }, // ✅ Expenses Page
@@ -17,5 +19,6 @@ export const routes: Routes = [
     { path: 'budgets', component: BudgetComponent, canActivate: [authGuard] },
     { path: 'reports', component:ReportsComponent, canActivate: [authGuard] },
     { path: 'logout', component: LogoutComponent },
+
     { path: '**', redirectTo: '/login' },
 ];

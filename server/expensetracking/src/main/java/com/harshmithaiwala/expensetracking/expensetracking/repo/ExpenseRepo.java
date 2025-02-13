@@ -17,8 +17,10 @@ public interface ExpenseRepo extends JpaRepository<Expense, UUID> {
     // ✅ Fetch all expenses for a specific user
     List<Expense> findByUser(User user);
 
-    Optional<Object> findByUserAndCategory(User user, String category);
+    Optional<Object[]> findByUserAndCategory(User user, String category);
     @Query("SELECT COALESCE(SUM(e.amount), 0) FROM Expense e WHERE e.user = :user AND e.category = :category")
     Double getTotalSpentByCategory(@Param("user") User user, @Param("category") String category);
+
+
 
 }

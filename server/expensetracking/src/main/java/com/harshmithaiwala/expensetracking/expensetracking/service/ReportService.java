@@ -95,7 +95,29 @@ public class ReportService {
             category.put("total_spent", entry.getValue());
             categoryList.add(category);
         }
+        return categoryList;
+    }
+    public List<Map<String, Object>> getCategoryIncome(String email) {
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
 
+        List<Map<String, Object>> categoryList = new ArrayList<>();
+
+        // 🔹 Group expenses by source
+        Map<String, Double> incomeSummary = incomeRepo.findByUser(user)
+                .stream()
+                .collect(Collectors.groupingBy(
+                        Income::getSource,
+                        Collectors.summingDouble(Income::getAmount)
+                ));
+
+        // 🔹 Convert to a list
+        for (Map.Entry<String, Double> entry : incomeSummary.entrySet()) {
+            Map<String, Object> category = new HashMap<>();
+            category.put("source", entry.getKey());
+            category.put("total_spent", entry.getValue());
+            categoryList.add(category);
+        }
         return categoryList;
     }
 

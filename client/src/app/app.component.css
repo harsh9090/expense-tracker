@@ -1,13 +1,11 @@
-.container {
-  padding: 20px;
-}
-
-.spacer {
-  flex: 1; /* ✅ Ensures spacing between title and buttons */
-}
-
 mat-toolbar {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
+    z-index: 9999 !important;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 64px; /* Set proper height */
+}
+
+.container {
+    margin-top: 70px; /* Ensure content starts after navbar */
 }

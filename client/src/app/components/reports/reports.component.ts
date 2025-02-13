@@ -44,8 +44,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           ...entry,
           month: this.fixDateFormat(entry.month) // ✅ Fix incorrect date format
         }));
-
-        console.log(this.summary);
         this.createChart(); // ✅ Create the chart after data is set
       },
       error: (err) => {
