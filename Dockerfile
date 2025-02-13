@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy only the project folder (if needed)
-COPY expensetracking /app
+COPY /server/expensetracking /app
 
 # Move to the correct directory
 WORKDIR /app
