@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:8080' // Backend URL
+    apiUrl: 'https://expense-tracker-api.onrender.com' // Backend URL
 };
