@@ -1,9 +1,20 @@
 <div class="flex mt-16 m-9 items-center justify-center">
-    <div class="bg-gray-100 p-8 w-full max-w-md shadow-lg rounded-lg ">
+    <div class="bg-gray-100 p-8 w-full max-w-md shadow-lg rounded-lg relative">
+        <!-- Loader (Overlay) -->
+        <div *ngIf="loading"
+            class="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center rounded-lg">
+            <div class="loader"></div>
+        </div>
+
         <!-- Login Header -->
         <h2 class="text-3xl font-bold text-gray-700 text-center mb-6">
             🔐 Login to Your Account
         </h2>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="mb-4 text-center text-red-600 font-semibold">
+            {{ errorMessage }}
+        </div>
 
         <!-- Email Field -->
         <div class="mb-4">
@@ -19,8 +30,9 @@
                 class="mt-1 block w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
         </div>
 
-        <!-- L ogin Button -->
-        <button (click)="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md transition">
+        <!-- Login Button -->
+        <button (click)="login()" [disabled]="loading"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md transition">
             Login
         </button>
 
@@ -29,7 +41,6 @@
             <a href="#" class="text-blue-500 hover:underline opacity-50 pointer-events-none cursor-not-allowed">
                 Forgot Password?
             </a>
-
             <span class="mx-2 text-gray-400">|</span>
             <a href="register" class="text-blue-500 hover:underline">Create an Account</a>
         </div>
