@@ -3,6 +3,18 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export interface IncomeSource {
+  source: string;
+  total: number;
+}
+
+export interface IncomeDetail {
+  date: Date;
+  amount: number;
+  category: string;
+  source: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -48,5 +60,13 @@ export class IncomeService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     });
+  }
+
+  getIncomeBySource(): Observable<IncomeSource[]> {
+    return this.http.get<IncomeSource[]>(`${this.apiUrl}/income/by-source`);
+  }
+
+  getIncomeBySourceDetails(source: string): Observable<IncomeDetail[]> {
+    return this.http.get<IncomeDetail[]>(`${this.apiUrl}/income/source/${source}`);
   }
 }

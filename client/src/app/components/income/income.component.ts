@@ -10,6 +10,44 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 
+enum IncomeSource {
+  // Employment Income
+  Salary = 'Salary',
+  Bonus = 'Bonus',
+  Commission = 'Commission',
+  Overtime = 'Overtime',
+
+  // Business Income
+  Business = 'Business',
+  Freelance = 'Freelance',
+  Consulting = 'Consulting',
+  ECommerce = 'E-Commerce',
+
+  // Investment Income
+  Dividends = 'Dividends',
+  Interest = 'Interest',
+  Crypto = 'Crypto',
+  StockTrading = 'Stock Trading',
+
+  // Rental Income
+  Residential = 'Residential',
+  Commercial = 'Commercial',
+  Parking = 'Parking',
+  Storage = 'Storage',
+
+  // Passive Income
+  Royalties = 'Royalties',
+  Licensing = 'Licensing',
+  Affiliate = 'Affiliate',
+  AdRevenue = 'Ad Revenue',
+
+  // Other Income
+  Pension = 'Pension',
+  Gifts = 'Gifts',
+  Insurance = 'Insurance',
+  Other = 'Other'
+}
+
 @Component({
   selector: 'app-income',
   standalone: true,
@@ -28,8 +66,14 @@ import { MatCardModule } from '@angular/material/card';
 export class IncomeComponent implements OnInit {
   incomes: any[] = [];
   dialog = inject(MatDialog);
+  IncomeSource = IncomeSource;
 
-  newIncome = { source: '', amount: null, date: '' }; // ✅ New income object
+  newIncome = {
+    source: '' as IncomeSource | '',
+    category: '',
+    amount: null,
+    date: ''
+  };
 
   constructor(private incomeService: IncomeService) { }
 
@@ -40,13 +84,10 @@ export class IncomeComponent implements OnInit {
   fetchIncome(): void {
     this.incomeService.getIncome().subscribe({
       next: (data) => {
-        // Convert string dates to Date objects before sorting
         this.incomes = data.map((income:any) => ({
           ...income,
-          date: new Date(income.date) // Ensure it's a Date object
+          date: new Date(income.date)
         }));
-        console.log(this.incomes);
-        // Sort incomes by date (Newest First)
         this.incomes.sort((a, b) => b.date.getTime() - a.date.getTime());
       },
       error: (err) => {
@@ -60,9 +101,8 @@ export class IncomeComponent implements OnInit {
 
     this.incomeService.addIncome(this.newIncome).subscribe({
       next: (data) => {
-
         this.incomes.push(data);
-        this.newIncome = { source: '', amount: null, date: '' }; // ✅ Reset form after submission
+        this.newIncome = { source: '', category: '', amount: null, date: '' };
       },
       error: (err) => {
         console.error('Error adding income:', err);
@@ -71,9 +111,22 @@ export class IncomeComponent implements OnInit {
   }
 
   openEditDialog(income: any): void {
+    // Format the date to YYYY-MM-DD before opening dialog
+    const formattedIncome = {
+      ...income,
+      date: typeof income.date === 'number' 
+        ? new Date(income.date).toISOString().split('T')[0]
+        : income.date instanceof Date 
+          ? income.date.toISOString().split('T')[0]
+          : new Date(income.date).toISOString().split('T')[0]
+    };
+
+    console.log('Original date:', income.date);
+    console.log('Formatted date:', formattedIncome.date);
+
     const dialogRef = this.dialog.open(IncomeEditDialogComponent, {
       width: '400px',
-      data: { ...income }
+      data: formattedIncome
     });
 
     dialogRef.afterClosed().subscribe(updatedIncome => {
@@ -86,7 +139,6 @@ export class IncomeComponent implements OnInit {
   updateIncome(id: string, updatedIncome: any): void {
     this.incomeService.updateIncome(id, updatedIncome).subscribe({
       next: () => {
-        
         this.incomes = this.incomes.map(income =>
           income.id === id ? updatedIncome : income
         );
@@ -103,5 +155,20 @@ export class IncomeComponent implements OnInit {
       console.log('Income deleted:', date);
       this.incomes = this.incomes.filter(income => income.id !== id);
     });
+  }
+
+  getTotalIncome(): number {
+    return this.incomes.reduce((total, income) => total + Number(income.amount), 0);
+  }
+
+  getCurrentMonthIncome(): number {
+    const now = new Date();
+    return this.incomes
+      .filter(income => new Date(income.date).getMonth() === now.getMonth())
+      .reduce((total, income) => total + Number(income.amount), 0);
+  }
+
+  getAverageIncome(): number {
+    return this.incomes.length ? this.getTotalIncome() / this.incomes.length : 0;
   }
 }

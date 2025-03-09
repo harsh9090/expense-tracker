@@ -1,48 +1,93 @@
-<div class="flex mt-16 m-9 items-center justify-center">
-    <div class="bg-gray-100 p-8 w-full max-w-md shadow-lg rounded-lg relative">
-        <!-- Loader (Overlay) -->
-        <div *ngIf="loading"
-            class="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center rounded-lg">
-            <div class="loader"></div>
+<div class="min-h-[calc(100vh-80px)] flex items-center justify-center p-4">
+    <div class="w-full max-w-[440px]">
+        <!-- Login Card -->
+        <div class="backdrop-blur-2xl bg-white/30 p-10 rounded-[40px] relative overflow-hidden border border-white/20">
+            <!-- Decorative Elements -->
+            <div class="absolute -top-20 -right-20 w-60 h-60 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-transparent rounded-full blur-lg"></div>
+            <div class="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-purple-600/20 via-pink-500/20 to-transparent rounded-full blur-lg"></div>
+
+            <!-- Loader -->
+            <div *ngIf="loading"
+                class="absolute inset-0 backdrop-blur-sm bg-white/30 flex items-center justify-center rounded-[40px] z-50">
+                <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+
+            <!-- Login Header -->
+            <div class="text-center mb-10 relative">
+                <h2 class="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    Welcome Back
+                </h2>
+                <p class="text-gray-600 mt-3 text-lg">Sign in to your account</p>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="errorMessage" 
+                class="mb-8 p-4 bg-red-50/50 backdrop-blur-sm border-l-4 border-red-500 rounded-lg">
+                <p class="text-red-700 text-sm font-medium">{{ errorMessage }}</p>
+            </div>
+
+            <!-- Login Form -->
+            <form class="space-y-7">
+                <!-- Email Field -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">Email Address</label>
+                    <div class="relative group">
+                        <mat-icon class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-200">
+                            mail
+                        </mat-icon>
+                        <input type="email" 
+                            [(ngModel)]="email" 
+                            name="email" 
+                            placeholder="Enter your email"
+                            class="w-full pl-12 pr-4 py-3.5 bg-white/50 backdrop-blur-sm border border-white/20 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 outline-none text-gray-700 placeholder-gray-500" />
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">Password</label>
+                    <div class="relative group">
+                        <mat-icon class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-200">
+                            lock
+                        </mat-icon>
+                        <input type="password" 
+                            [(ngModel)]="password" 
+                            name="password" 
+                            placeholder="Enter your password"
+                            class="w-full pl-12 pr-4 py-3.5 bg-white/50 backdrop-blur-sm border border-white/20 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 outline-none text-gray-700 placeholder-gray-500" />
+                    </div>
+                </div>
+
+                <!-- Login Button -->
+                <button (click)="login()" 
+                    [disabled]="loading"
+                    class="w-full bg-gradient-to-r from-primary to-secondary text-white font-semibold py-4 rounded-2xl hover:opacity-90 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                    <span class="flex items-center justify-center text-base">
+                        <mat-icon *ngIf="!loading" class="mr-2">login</mat-icon>
+                        <span>{{ loading ? 'Signing in...' : 'Sign In' }}</span>
+                    </span>
+                </button>
+
+                <!-- Links -->
+                <div class="flex items-center justify-between pt-2">
+                    <a href="#"
+                        class="text-sm text-gray-600 hover:text-primary transition-colors duration-200 opacity-50 pointer-events-none cursor-not-allowed">
+                        Forgot Password?
+                    </a>
+                    <a [routerLink]="['/register']"
+                        class="text-sm font-medium text-primary hover:text-secondary transition-colors duration-200">
+                        Create Account
+                    </a>
+                </div>
+            </form>
         </div>
 
-        <!-- Login Header -->
-        <h2 class="text-3xl font-bold text-gray-700 text-center mb-6">
-            🔐 Login to Your Account
-        </h2>
-
-        <!-- Error Message -->
-        <div *ngIf="errorMessage" class="mb-4 text-center text-red-600 font-semibold">
-            {{ errorMessage }}
-        </div>
-
-        <!-- Email Field -->
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" placeholder="Enter your email" [(ngModel)]="email"
-                class="mt-1 block w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
-        </div>
-
-        <!-- Password Field -->
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700">Password</label>
-            <input type="password" placeholder="Enter your password" [(ngModel)]="password"
-                class="mt-1 block w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
-        </div>
-
-        <!-- Login Button -->
-        <button (click)="login()" [disabled]="loading"
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md transition">
-            Login
-        </button>
-
-        <!-- Forgot Password & Signup Links -->
-        <div class="mt-4 text-center">
-            <a href="#" class="text-blue-500 hover:underline opacity-50 pointer-events-none cursor-not-allowed">
-                Forgot Password?
-            </a>
-            <span class="mx-2 text-gray-400">|</span>
-            <a href="register" class="text-blue-500 hover:underline">Create an Account</a>
+        <!-- Security Info -->
+        <div class="text-center mt-8">
+            <p class="text-white text-sm flex items-center justify-center font-medium">
+                <mat-icon class="mr-2 text-base">security</mat-icon>
+                Secure login • Protected by SSL
+            </p>
         </div>
     </div>
 </div>

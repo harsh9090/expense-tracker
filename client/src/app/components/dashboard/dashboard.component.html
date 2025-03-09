@@ -1,17 +1,134 @@
-<div class="flex justify-center mt-6">
-    <button (click)="activeTab = 'expenses'" [class.active]="activeTab === 'expenses'"
-        class="px-6 py-2 mx-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-700 transition">
-        Expenses
-    </button>
+<!-- Dashboard Container -->
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4 font-['Inter'] text-gray-900">
+    <div class="max-w-7xl mx-auto space-y-8">
+        <!-- Header Section -->
+        <div class="text-center mb-10">
+            <div class="inline-block bg-white px-10 py-6 rounded-2xl shadow-xl border border-gray-200">
+                <h1 class="text-4xl font-extrabold text-blue-600">
+                    Financial Dashboard
+                </h1>
+                <div class="h-px w-full bg-gradient-to-r from-blue-200 via-indigo-300 to-purple-200 my-3"></div>
+                <p class="text-gray-900 text-lg font-medium">Track and manage your financial activities</p>
+            </div>
+        </div>
 
-    <button (click)="activeTab = 'income'" [class.active]="activeTab === 'income'"
-        class="px-6 py-2 mx-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-700 transition">
-        Income
-    </button>
-</div>
+        <!-- Quick Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Total Balance Card -->
+            <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-3 bg-blue-100 rounded-xl">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <span class="text-gray-900 font-semibold text-base">Total Balance</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Last 30 days</span>
+                </div>
+                <div class="flex items-baseline justify-between">
+                    <h3 class="text-3xl font-bold text-gray-900">${{ totalBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</h3>
+                    <p class="flex items-center" [class.text-green-700]="balanceChange >= 0" [class.text-red-700]="balanceChange < 0">
+                        <svg *ngIf="balanceChange >= 0" class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                        <svg *ngIf="balanceChange < 0" class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                        </svg>
+                        {{ balanceChange >= 0 ? '+' : '' }}{{ balanceChange.toFixed(1) }}%
+                    </p>
+                </div>
+            </div>
 
-<!-- Expense or Income View -->
-<div class="mt-6">
-    <app-inner-expenses *ngIf="activeTab === 'expenses'"></app-inner-expenses>
-    <app-inner-income *ngIf="activeTab === 'income'"></app-inner-income>
+            <!-- Total Expenses Card -->
+            <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-3 bg-red-100 rounded-xl">
+                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                            </svg>
+                        </div>
+                        <span class="text-gray-900 font-semibold text-base">Total Expenses</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Last 30 days</span>
+                </div>
+                <div class="flex items-baseline justify-between">
+                    <h3 class="text-3xl font-bold text-gray-900">${{ totalExpenses.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</h3>
+                    <p class="flex items-center" [class.text-green-700]="expenseChange < 0" [class.text-red-700]="expenseChange >= 0">
+                        <svg *ngIf="expenseChange >= 0" class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                        </svg>
+                        <svg *ngIf="expenseChange < 0" class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                        {{ expenseChange >= 0 ? '+' : '' }}{{ expenseChange.toFixed(1) }}%
+                    </p>
+                </div>
+            </div>
+
+            <!-- Total Income Card -->
+            <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-3 bg-green-100 rounded-xl">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                            </svg>
+                        </div>
+                        <span class="text-gray-900 font-semibold text-base">Total Income</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Last 30 days</span>
+                </div>
+                <div class="flex items-baseline justify-between">
+                    <h3 class="text-3xl font-bold text-gray-900">${{ totalIncome.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</h3>
+                    <p class="flex items-center" [class.text-green-700]="incomeChange >= 0" [class.text-red-700]="incomeChange < 0">
+                        <svg *ngIf="incomeChange >= 0" class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                        <svg *ngIf="incomeChange < 0" class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                        </svg>
+                        {{ incomeChange >= 0 ? '+' : '' }}{{ incomeChange.toFixed(1) }}%
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex justify-center gap-4 mt-12">
+            <button 
+                (click)="activeTab = 'expenses'" 
+                [ngClass]="{
+                    'bg-blue-600 text-white shadow-lg': activeTab === 'expenses',
+                    'bg-white text-gray-900 hover:bg-gray-50': activeTab !== 'expenses'
+                }"
+                class="px-8 py-3 rounded-xl font-semibold text-base transition-all duration-200 flex items-center space-x-2">
+                <svg *ngIf="activeTab === 'expenses'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span>Expenses</span>
+            </button>
+
+            <button 
+                (click)="activeTab = 'income'"
+                [ngClass]="{
+                    'bg-blue-600 text-white shadow-lg': activeTab === 'income',
+                    'bg-white text-gray-900 hover:bg-gray-50': activeTab !== 'income'
+                }"
+                class="px-8 py-3 rounded-xl font-semibold text-base transition-all duration-200 flex items-center space-x-2">
+                <svg *ngIf="activeTab === 'income'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span>Income</span>
+            </button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="mt-8 bg-white rounded-2xl border border-gray-200 p-8 shadow-xl">
+            <app-inner-expenses *ngIf="activeTab === 'expenses'"></app-inner-expenses>
+            <app-inner-income *ngIf="activeTab === 'income'"></app-inner-income>
+        </div>
+    </div>
 </div>

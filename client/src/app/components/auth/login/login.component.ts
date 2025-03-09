@@ -2,16 +2,24 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCard } from '@angular/material/card';
 import { MatFormField } from '@angular/material/form-field';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../../services/login.service';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [FormsModule, MatInputModule, CommonModule]
+  standalone: true,
+  imports: [
+    FormsModule, 
+    MatInputModule, 
+    CommonModule, 
+    MatIconModule,
+    RouterModule
+  ]
 })
 export class LoginComponent {
   email = '';
@@ -27,6 +35,7 @@ export class LoginComponent {
 
     this.loginService.getLoginDetails(this.email, this.password).subscribe({
       next: (response) => {
+        
         localStorage.setItem('token', response);
         this.loading = false;
         this.router.navigate(['/dashboard']);

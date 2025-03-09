@@ -6,6 +6,4 @@ mat-toolbar {
     height: 64px; /* Set proper height */
 }
 
-.container {
-    margin-top: 70px; /* Ensure content starts after navbar */
-}
+

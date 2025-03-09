@@ -1,71 +1,133 @@
-<div class="max-w-5xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">💸 Manage Your Expenses</h2>
-
-    <!-- ✅ Add Expense Form -->
-    <form (submit)="addExpense()" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end mb-6">
-        <div>
-            <label class="block text-gray-700 font-semibold mb-2">Category*</label>
-            <input type="text" [(ngModel)]="newExpense.category" name="category"
-                class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
-                placeholder="Category" required />
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h2 class="text-4xl font-bold text-gray-800 mb-2">💸 Expense Manager</h2>
+            <p class="text-gray-600">Track and manage your daily expenses</p>
         </div>
 
-        <div>
-            <label class="block text-gray-700 font-semibold mb-2">Description*</label>
-            <input type="text" [(ngModel)]="newExpense.description" name="description"
-                class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
-                placeholder="Description" required />
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="backdrop-blur-xl bg-white/30 rounded-xl p-6 shadow-lg border border-white/50">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-700">Total Expenses</h3>
+                    <span class="text-blue-600 bg-blue-100 px-3 py-1 rounded-full text-sm">All Time</span>
+                </div>
+                <p class="text-3xl font-bold text-gray-800 mt-2">${{ getTotalExpenses() | number:'1.2-2' }}</p>
+            </div>
+            <div class="backdrop-blur-xl bg-white/30 rounded-xl p-6 shadow-lg border border-white/50">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-700">This Month</h3>
+                    <span class="text-blue-600 bg-blue-100 px-3 py-1 rounded-full text-sm">Current</span>
+                </div>
+                <p class="text-3xl font-bold text-gray-800 mt-2">${{ getCurrentMonthExpenses() | number:'1.2-2' }}</p>
+            </div>
+            <div class="backdrop-blur-xl bg-white/30 rounded-xl p-6 shadow-lg border border-white/50">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-700">Average Expense</h3>
+                    <span class="text-blue-600 bg-blue-100 px-3 py-1 rounded-full text-sm">Per Entry</span>
+                </div>
+                <p class="text-3xl font-bold text-gray-800 mt-2">${{ getAverageExpense() | number:'1.2-2' }}</p>
+            </div>
         </div>
 
-        <div>
-            <label class="block text-gray-700 font-semibold mb-2">Amount*</label>
-            <input type="number" [(ngModel)]="newExpense.amount" name="amount"
-                class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
-                placeholder="Amount" required />
-        </div>
+        <!-- Main Content -->
+        <div class="backdrop-blur-xl bg-white/80 rounded-xl p-6 shadow-xl">
+            <!-- Add Expense Form -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800">New Expense</h3>
+                    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-200 to-transparent mx-4"></div>
+                </div>
+                <form (submit)="addExpense()" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1.5">Category</label>
+                        <select [(ngModel)]="newExpense.category" name="category" required
+                            class="w-full px-3.5 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-400 focus:border-blue-400 bg-white/90 text-gray-700 text-sm transition-all">
+                            <option value="" disabled selected>Select category</option>
+                            <option [value]="ExpenseCategory.Food">Food & Dining</option>
+                            <option [value]="ExpenseCategory.Transportation">Transportation</option>
+                            <option [value]="ExpenseCategory.Housing">Housing & Utilities</option>
+                            <option [value]="ExpenseCategory.Healthcare">Healthcare</option>
+                            <option [value]="ExpenseCategory.Entertainment">Entertainment</option>
+                            <option [value]="ExpenseCategory.Shopping">Shopping</option>
+                            <option [value]="ExpenseCategory.Education">Education</option>
+                            <option [value]="ExpenseCategory.Travel">Travel</option>
+                            <option [value]="ExpenseCategory.Other">Other</option>
+                        </select>
+                    </div>
 
-        <div>
-            <label class="block text-gray-700 font-semibold mb-2">Date*</label>
-            <input type="date" [(ngModel)]="newExpense.date" name="date"
-                class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none" required />
-        </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1.5">Description</label>
+                        <input type="text" [(ngModel)]="newExpense.description" name="description" required
+                            class="w-full px-3.5 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-400 focus:border-blue-400 bg-white/90 text-gray-700 text-sm"
+                            placeholder="Brief description">
+                    </div>
 
-        <button type="submit"
-            class="md:col-span-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition w-full">
-            ➕ Add Expense
-        </button>
-    </form>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1.5">Amount</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 text-sm">$</span>
+                            </div>
+                            <input type="number" [(ngModel)]="newExpense.amount" name="amount" required
+                                class="w-full pl-7 pr-3.5 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-400 focus:border-blue-400 bg-white/90 text-gray-700 text-sm"
+                                placeholder="0.00" step="0.01">
+                        </div>
+                    </div>
 
-    <!-- ✅ Expenses Table -->
-    <div class="overflow-hidden border border-gray-300 shadow-md rounded-lg">
-        <table class="w-full bg-white text-left border-collapse">
-            <thead>
-                <tr class="bg-blue-600 text-white text-lg">
-                    <th class="p-4">Date</th>
-                    <th class="p-4">Category</th>
-                    <th class="p-4">Description</th>
-                    <th class="p-4">Amount</th>
-                    <th class="p-4 text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let expense of expenses" class="border-b transition hover:bg-blue-50">
-                    <td class="p-4 text-gray-600">{{ expense.date | date:'MMM d, y' }}</td>
-                    <td class="p-4 text-gray-700">{{ expense.category }}</td>
-                    <td class="p-4 text-gray-700">{{ expense.description }}</td>
-                    <td class="p-4 font-bold text-green-700">${{ expense.amount }}</td>
-                    <td class="p-4 text-center flex gap-2 justify-center">
-                        <button (click)="openEditDialog(expense)"
-                            class="px-3 py-1 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 transition">
-                            ✏ Edit
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1.5">Date</label>
+                        <input type="date" [(ngModel)]="newExpense.date" name="date" required
+                            class="w-full px-3.5 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-400 focus:border-blue-400 bg-white/90 text-gray-700 text-sm">
+                    </div>
+
+                    <div class="md:col-span-4 flex justify-end mt-2">
+                        <button type="submit"
+                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            Record Expense
                         </button>
-                        <button (click)="deleteExpense(expense.id)"
-                            class="px-3 py-1 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition">
-                            ❌ Delete
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Expenses Table -->
+            <div class="overflow-hidden rounded-xl border border-gray-200 shadow-lg">
+                <table class="w-full bg-white/70 backdrop-blur-sm">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+                            <th class="px-6 py-4 font-semibold">Date</th>
+                            <th class="px-6 py-4 font-semibold">Category</th>
+                            <th class="px-6 py-4 font-semibold">Description</th>
+                            <th class="px-6 py-4 font-semibold">Amount</th>
+                            <th class="px-6 py-4 text-center font-semibold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr *ngFor="let expense of expenses" class="transition-colors hover:bg-blue-50/50">
+                            <td class="px-6 py-4 text-gray-600">{{ expense.date | date:'MMM d, y' }}</td>
+                            <td class="px-6 py-4 text-gray-700">{{ expense.category }}</td>
+                            <td class="px-6 py-4 text-gray-700">{{ expense.description }}</td>
+                            <td class="px-6 py-4 font-semibold text-blue-700">${{ expense.amount }}</td>
+                            <td class="px-6 py-4">
+                                <div class="flex gap-2 justify-center">
+                                    <button (click)="openEditDialog(expense)"
+                                        class="px-4 py-2 bg-amber-500 text-white rounded-lg shadow-md hover:bg-amber-600 transition-all transform hover:scale-105">
+                                        ✏️ Edit
+                                    </button>
+                                    <button (click)="deleteExpense(expense.id)"
+                                        class="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition-all transform hover:scale-105">
+                                        🗑️ Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

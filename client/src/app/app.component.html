@@ -1,31 +1,59 @@
-<mat-toolbar color="primary" class="fixed top-0 w-full shadow-lg z-[50] bg-white h-[64px]">
-    <span class="text-lg font-bold">Expense Tracker</span>
-    <span class="flex-grow"></span>
-    <button *ngIf="warnings.length > 0 && !isLoggedIn()" mat-icon-button (click)="toggleNotifications()">
-        <mat-icon>notifications</mat-icon>
-        <span
-            class="notification-badge absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-            {{ warnings.length }}
-        </span>
-    </button>
-    <button mat-button [routerLink]="'/dashboard'" *ngIf="isLoggedIn()">Dashboard</button>
-    <button mat-button [routerLink]="'/expenses'" *ngIf="isLoggedIn()">Expenses</button>
-    <button mat-button [routerLink]="'/income'" *ngIf="isLoggedIn()">Income</button>
-    <button mat-button [routerLink]="'/logout'" *ngIf="isLoggedIn()">Logout</button>
-    <button mat-button [routerLink]="'/login'" *ngIf="!isLoggedIn()">Login</button>
-    <button mat-button [routerLink]="'/register'" *ngIf="!isLoggedIn()">Register</button>
-</mat-toolbar>
+<!-- Main Container with Gradient Background -->
+<div class="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500">
+    <!-- Navbar -->
+    <div class="fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto py-4">
+            <div class="flex items-center justify-between backdrop-blur-xl bg-black/10 rounded-2xl border border-white/10 px-6 h-16">
+                <!-- Logo Area -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                        <span class="text-lg font-bold text-white">ET</span>
+                    </div>
+                    <span class="text-xl font-bold text-white tracking-wide">Expense Tracker</span>
+                </div>
 
+                <!-- Navigation Buttons -->
+                <div class="flex items-center gap-4">
+                    <ng-container *ngIf="isLoggedIn()">
+                        <button mat-button [routerLink]="'/dashboard'" 
+                                class="bg-white/10 text-white hover:bg-white/20 transition-all duration-300 rounded-xl px-6 h-11 font-medium">
+                            <span class="text-sm text-white">Dashboard</span>
+                        </button>
 
-<!-- Add padding to prevent navbar overlap -->
-<div class="container mt-[70px] p-6">
-    <router-outlet></router-outlet>
-</div>
+                        <button mat-button [routerLink]="'/expenses'" 
+                                class="bg-white/10 text-white hover:bg-white/20 transition-all duration-300 rounded-xl px-6 h-11 font-medium">
+                            <span class="text-sm text-white">Expenses</span>
+                        </button>
 
+                        <button mat-button [routerLink]="'/income'" 
+                                class="bg-white/10 text-white hover:bg-white/20 transition-all duration-300 rounded-xl px-6 h-11 font-medium">
+                            <span class="text-sm text-white">Income</span>
+                        </button>
 
-<!-- Page Container -->
-<!-- <div class="flex justify-center items-center min-h-screen bg-gray-100">
-    <div class="container p-6 w-full max-w-lg">
+                        <button mat-button [routerLink]="'/logout'" 
+                                class="bg-red-500/20 text-white hover:bg-red-500/30 transition-all duration-300 rounded-xl px-6 h-11 font-medium">
+                            <span class="text-sm text-white">Logout</span>
+                        </button>
+                    </ng-container>
+                    
+                    <ng-container *ngIf="!isLoggedIn()">
+                        <button mat-button [routerLink]="'/login'" 
+                                class="bg-white/10 text-white hover:bg-white/20 transition-all duration-300 rounded-xl px-6 h-11 font-medium">
+                            <span class="text-sm text-white">Login</span>
+                        </button>
+
+                        <button mat-button [routerLink]="'/register'" 
+                                class="bg-white/10 text-white hover:bg-white/20 transition-all duration-300 rounded-xl px-6 h-11 font-medium border border-white/10">
+                            <span class="text-sm text-white">Register</span>
+                        </button>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="container mx-auto px-4 pt-28">
         <router-outlet></router-outlet>
     </div>
-</div> -->
+</div>
