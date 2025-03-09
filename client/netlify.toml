@@ -1,6 +1,7 @@
 [build]
   command = "ng build"
-  publish = "dist/client"
+  publish = "client/dist/expense-tracker-frontend"
+
 
 [[redirects]]
   from = "/*"
