@@ -1,6 +1,6 @@
 [build]
   command = "npm install && ng build --configuration=production"
-  publish = "dist/expense-tracker-frontend/browser"
+  publish = "dist/expense-tracker-frontend"
 
 
 [[redirects]]
